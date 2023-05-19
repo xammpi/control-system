@@ -1,32 +1,25 @@
 package com.mc.control.models.common;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import java.util.List;
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "city",
         uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
-@NoArgsConstructor
-@Getter
-@Setter
 public class City {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id",
+            nullable = false)
     private Long id;
-    @NotBlank(message = "Укажите название")
+    @Column(name = "name",
+            nullable = false)
     private String name;
 
-    @Override
-    public String toString() {
-        return "City{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }

@@ -2,8 +2,9 @@ package com.mc.control.models.common;
 
 import com.mc.control.models.technical_request.TechnicalRequest;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,9 +13,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "user",
         uniqueConstraints = @UniqueConstraint(columnNames = {"username", "email"}))
@@ -45,24 +47,6 @@ public class User extends AbstractUser implements UserDetails {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user",
             cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private List<TechnicalRequest> technicalRequests;
-
-    public User() {
-        super();
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", roles=" + roles +
-                ", problemAreas=" + problemAreas +
-                ", departments=" + departments +
-                ", technicalRequests=" + technicalRequests +
-                '}';
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

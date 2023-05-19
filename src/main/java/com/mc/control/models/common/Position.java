@@ -1,21 +1,25 @@
 package com.mc.control.models.common;
 
-import com.mc.control.models.common.Employee;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "position",
         uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
-@Getter
-@Setter
 public class Position {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id",
+            nullable = false)
     private Long id;
+    @Column(name = "name",
+            nullable = false)
     private String name;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private Employee employee;

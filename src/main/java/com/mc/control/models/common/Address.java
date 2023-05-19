@@ -1,19 +1,21 @@
 package com.mc.control.models.common;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "address")
-@NoArgsConstructor
-@Getter
-@Setter
 public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id",
+            nullable = false)
     private Long id;
     @Column(name = "street_name")
     private String streetName;
@@ -22,13 +24,4 @@ public class Address {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private City cities;
 
-    @Override
-    public String toString() {
-        return "Address{" +
-                "id=" + id +
-                ", streetName='" + streetName + '\'' +
-                ", blockNumber=" + blockNumber +
-                ", cities=" + cities +
-                '}';
-    }
 }
