@@ -1,5 +1,6 @@
 package com.mc.control.models.technical_request;
 
+import com.mc.control.models.common.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -10,16 +11,17 @@ import java.util.Calendar;
 import java.util.Date;
 
 @Entity
-@Table(name = "request")
+@Table(name = "technical_request")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Request {
+public class TechnicalRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "date_created")
+    @Column(name = "date_created"
+            , nullable = false)
     @Temporal(TemporalType.DATE)
     private Date dateCreated = Calendar.getInstance().getTime();
     @Column(name = "date_execution")
@@ -31,30 +33,27 @@ public class Request {
     @Column(name = "date_close")
     @Temporal(TemporalType.DATE)
     private Date dateClose;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private State state;
     @NotBlank(message = "Укажите Фамилию и Имя")
-    private String name;
-    @NotBlank(message = "Укажите контактный телефон")
-    private String phone;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    private User user;
     @NotBlank(message = "Опишите проблему")
-    @Column(length = 2000)
-    private String message;
-    @Transient
-    private String dateSort;
+    @Column(name = "description",
+            length = 2000,
+            nullable = false)
+    private String description;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private Employee employee;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @NotBlank(message = "Выберите магазин из списка")
-    private Shop shop;
+    private ProblemArea problemArea;
     @ManyToOne
     private Problem problem;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private Department department;
+    @Column(name = "comment",
+            length = 2000)
     private String comment;
-
-    public Request(@NotBlank(message = "Выберите магазин из списка") Shop shop) {
-        this.shop = shop;
-    }
 
 }
