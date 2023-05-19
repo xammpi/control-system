@@ -1,13 +1,15 @@
 package com.mc.control.models.common;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-@Getter
-@Setter
+@Data
 @SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @MappedSuperclass
 public class AbstractUser {
 
@@ -24,19 +26,5 @@ public class AbstractUser {
     private boolean active;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Address address;
-
-    public AbstractUser() {
-    }
-
-    @Override
-    public String toString() {
-        return "AbstractUser{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", phone='" + phone + '\'' +
-                ", active=" + active +
-                ", address=" + address +
-                '}';
-    }
 
 }

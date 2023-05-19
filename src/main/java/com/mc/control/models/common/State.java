@@ -1,20 +1,28 @@
 package com.mc.control.models.common;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Entity
-@Table(name = "state")
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
+@AllArgsConstructor
+@Entity
+@Table(name = "state",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"name", "value"}))
 public class State {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id",
+            nullable = false)
     private Long id;
+    @Column(name = "name",
+            nullable = false)
     private String name;
+    @Column(name = "value",
+            nullable = false)
+    private int value;
 
 }

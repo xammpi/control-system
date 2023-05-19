@@ -2,23 +2,27 @@ package com.mc.control.models.common;
 
 import com.mc.control.models.technical_request.TechnicalRequest;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "problem",
         uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
-@NoArgsConstructor
-@Getter
-@Setter
 public class Problem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id",
+            nullable = false)
     private Long id;
+    @Column(name = "name",
+            nullable = false)
     private String name;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private Department department;
