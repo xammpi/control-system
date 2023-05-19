@@ -1,8 +1,10 @@
-package com.mc.control.models.technical_request;
+package com.mc.control.models.common;
 
+import com.mc.control.models.technical_request.TechnicalRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -11,16 +13,15 @@ import java.util.Objects;
 
 
 @Entity
-@Table(name = "employee")
-@NoArgsConstructor
+@Table(name = "employee",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"first_name", "last_name", "phone"}))
 @Getter
 @Setter
-public class Employee {
+public class Employee extends AbstractUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "employee",
             cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private List<Position> positions;
@@ -28,7 +29,11 @@ public class Employee {
     private Department departments;
     @OneToMany(mappedBy = "employee",
             cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
-    private List<Request> requests;
+    private List<TechnicalRequest> technicalRequests;
+
+    protected Employee(AbstractUserBuilder<?, ?> b) {
+        super(b);
+    }
 
     public void addPositionToEmployee(Position position) {
         if (Objects.isNull(positions)) {
@@ -37,11 +42,11 @@ public class Employee {
         positions.add(position);
     }
 
-    public void addRequestToEmployee(Request request) {
-        if (Objects.isNull(requests)) {
-            requests = new ArrayList<>();
+    public void addRequestToEmployee(TechnicalRequest technicalRequest) {
+        if (Objects.isNull(technicalRequests)) {
+            technicalRequests = new ArrayList<>();
         }
-        requests.add(request);
+        technicalRequests.add(technicalRequest);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.mc.control.models.technical_request;
+package com.mc.control.models.common;
 
 import jakarta.persistence.*;
 import lombok.Getter;

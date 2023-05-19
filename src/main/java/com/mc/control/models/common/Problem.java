@@ -1,5 +1,6 @@
-package com.mc.control.models.technical_request;
+package com.mc.control.models.common;
 
+import com.mc.control.models.technical_request.TechnicalRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,22 +9,21 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Table(name = "shop")
+@Table(name = "problem",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
 @NoArgsConstructor
 @Getter
 @Setter
-public class Shop {
+public class Problem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @Column(name = "shop_number")
-    private int shopNumber;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
-    private User user;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "shop",
+    private Department department;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "problem",
             cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
-    private List<Request> requests;
+    private List<TechnicalRequest> technicalRequest;
 
 }
