@@ -1,4 +1,4 @@
-package com.mc.control.models.common;
+package com.mc.control.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "city",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
-public class City {
+@Table(name = "state",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"name", "value"}))
+public class State {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +19,11 @@ public class City {
             nullable = false)
     private Long id;
     @Column(name = "name",
+            columnDefinition = "TEXT",
             nullable = false)
     private String name;
+    @Column(name = "value",
+            nullable = false)
+    private int value;
 
 }

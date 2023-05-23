@@ -1,9 +1,9 @@
-package com.mc.control.models.common;
+package com.mc.control.models;
 
 import org.springframework.security.core.GrantedAuthority;
 
 public enum Role implements GrantedAuthority {
-    USER,SUPPORT,ADMIN;
+    USER, SUPPORT, ADMIN;
 
     @Override
     public String getAuthority() {
