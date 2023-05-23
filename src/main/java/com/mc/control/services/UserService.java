@@ -1,10 +1,13 @@
 package com.mc.control.services;
 
-import com.mc.control.models.common.User;
+import com.mc.control.models.User;
 import com.mc.control.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,23 +29,33 @@ public class UserService {
 
     public User findById(Long id) {
         Optional<User> optionalUser = userRepository.findById(id);
-        return optionalUser.orElse(null);
+        return optionalUser.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format("User with id %d not found", id)));
     }
 
+    @Modifying
     @Transactional
     public void save(User user) {
         userRepository.save(user);
     }
 
+    @Modifying
     @Transactional
     public void update(Long id, User updatedUser) {
         updatedUser.setId(id);
         userRepository.save(updatedUser);
     }
 
+    @Modifying
     @Transactional
     public void deleteById(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public User findByEmail(String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        return optionalUser.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format("User with email %s not found", email)));
     }
 
 }

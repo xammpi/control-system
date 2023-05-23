@@ -1,9 +1,9 @@
 package com.mc.control.auth;
 
-import com.mc.control.models.common.Role;
-import com.mc.control.models.common.User;
-import com.mc.control.repositories.UserRepository;
+import com.mc.control.models.Reporter;
+import com.mc.control.models.User;
 import com.mc.control.services.JwtService;
+import com.mc.control.services.ReporterService;
 import com.mc.control.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,29 +13,41 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
-
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    @Autowired
     private final UserService userService;
-    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final ReporterService reporterService;
+
+    @Autowired
+    public AuthenticationService(UserService userService, ReporterService reporterService,
+                                 PasswordEncoder passwordEncoder, JwtService jwtService,
+                                 AuthenticationManager authenticationManager) {
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
+        this.reporterService = reporterService;
+        this.authenticationManager = authenticationManager;
+    }
 
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
+                .active(request.isActive())
                 .email(request.getEmail())
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .roles(Set.of(Role.ADMIN))
+//                .roles(Set.of(Role.ADMIN))
                 .build();
-        userService.save(user);
+        var reporter = Reporter.builder()
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .user(user)
+                .build();
+        reporterService.save(reporter);
         var jwtToken = jwtService.generateToken((UserDetails) user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
@@ -47,8 +59,7 @@ public class AuthenticationService {
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
                         request.getPassword()));
-        var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow();
+        var user = userService.findByEmail(request.getEmail());
         var jwtToken = jwtService.generateToken((UserDetails) user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)

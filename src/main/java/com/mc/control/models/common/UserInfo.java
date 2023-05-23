@@ -1,17 +1,20 @@
 package com.mc.control.models.common;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-@Data
+@Getter
+@Setter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
-public class AbstractUser {
+public abstract class UserInfo {
 
     @Column(name = "first_name",
             nullable = false)
@@ -21,10 +24,5 @@ public class AbstractUser {
     private String lastName;
     @Column(name = "phone")
     private String phone;
-    @Column(name = "active",
-            nullable = false)
-    private boolean active;
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private Address address;
 
 }
