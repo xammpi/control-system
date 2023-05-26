@@ -1,6 +1,5 @@
 package com.mc.control.models.technical_request;
 
-
 import com.mc.control.models.Department;
 import com.mc.control.models.Employee;
 import com.mc.control.models.common.AbstractRequest;

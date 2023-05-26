@@ -1,6 +1,5 @@
 package com.mc.control.services;
 
-
 import com.mc.control.models.User;
 import com.mc.control.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -18,5 +18,4 @@ public class RegisterRequest {
     private String username;
     private boolean isActive;
 
-
 }
