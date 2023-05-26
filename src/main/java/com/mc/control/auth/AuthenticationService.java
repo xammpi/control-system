@@ -13,9 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service
-@RequiredArgsConstructor
-public class AuthenticationService {
+import java.util.Set;
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
@@ -48,6 +46,7 @@ public class AuthenticationService {
                 .user(user)
                 .build();
         reporterService.save(reporter);
+
         var jwtToken = jwtService.generateToken((UserDetails) user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
